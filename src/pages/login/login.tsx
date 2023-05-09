@@ -50,14 +50,24 @@ export const Login: React.FunctionComponent<RouteComponentProps<any>> = (props) 
         dispatch(loading(true));
         userClient.login(loginData)
             .then((loginInfo) => {
-                const authresponse = loggedIn(loginInfo);
-                dispatch(authresponse);
 
-                const jwtstore = new Appstorage();
+                if(loginInfo.hasError == false){
+                    const authresponse = loggedIn(loginInfo);
+                    dispatch(authresponse);
 
-                jwtstore.set('user', JSON.stringify(loginInfo.data?.user))
+                    const jwtstore = new Appstorage();
 
-                executeDelayed(200,() => props.history.replace('/values'))
+                    Promise.all([
+                    jwtstore.set('user', JSON.stringify((loginInfo.data?.user && typeof loginInfo.data?.user === 'object') ? loginInfo.data?.user : {})),
+                    jwtstore.set('authentication', JSON.stringify((loginInfo.data?.authenticationInformation && typeof loginInfo.data?.authenticationInformation === 'object') ? loginInfo.data?.authenticationInformation : {}))
+                ]).then(
+                    x => {
+                        executeDelayed(200,() => props.history.replace('/home'))
+                    }
+                    )
+                } else {
+                    dispatch(error('Username or Password are incorrect!'));
+                }
             })
             .catch((err: Error) => {
                 dispatch(error('Error while logging in: ' + err.message));
