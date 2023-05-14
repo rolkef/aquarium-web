@@ -54,7 +54,7 @@ const formDescription: FormDescription<formData> = {
 
 const { Form, loading, error } = BuildForm(formDescription);
 
-export const Register: React.FunctionComponent<RouteComponentProps<any>> = props => {
+export const Register: React.FunctionComponent<RouteComponentProps<any>> = (props) => {
     const dispatch = useDispatch();
     const accessHeader = new IConfig();
     const userClient = new UserClient(accessHeader, config.host);

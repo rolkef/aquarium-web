@@ -13,8 +13,6 @@ const initialState : UserResponse = {
 
 }
 
-
-
 export const user = createReducer<UserResponse, AnyAction>(initialState)
     .handleAction(loggedIn, (state, action) => {
         return action.payload;

@@ -12,7 +12,6 @@ import {
 } from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
 import { useDispatch } from 'react-redux';
-import store, {AppDispatch} from "../../services/store";
 import {BuildForm, FormDescription} from "../../services/utils/form-builder";
 import {loggedIn} from "../../services/actions/users";
 import {LoginRequest, UserClient} from "../../services/rest/interface";
@@ -68,10 +67,9 @@ export const Login: React.FunctionComponent<RouteComponentProps<any>> = props =>
                     Promise.all([
                         JWTStore.set('user', JSON.stringify((loginInfo.data.user && typeof loginInfo.data?.user === 'object') ? loginInfo.data?.user : {})),
                         JWTStore.set('authentication', JSON.stringify((loginInfo.data?.authenticationInformation && typeof loginInfo.data?.authenticationInformation === 'object' ) ? loginInfo.data?.authenticationInformation : {}))
-                    ]).then(x => {
+                    ]).then(() => {
                         executeDelayed(200, () => props.history.replace('/home'));
-                    }
-                    )
+                    });
                 } else {
                     dispatch(error('Error while logging in: ' + loginInfo.message));
                 }
