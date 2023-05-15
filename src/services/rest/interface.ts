@@ -8,11 +8,11 @@
 // ReSharper disable InconsistentNaming
 // @ts-nocheck
 
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken} from 'axios';
 import {AuthorizedApiBase, IConfig} from "./iconfig";
 
 export class AquariumClient extends AuthorizedApiBase {
-    private instance: AxiosInstance;
+    private instance: AxiosInstance
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
@@ -26,7 +26,7 @@ export class AquariumClient extends AuthorizedApiBase {
 
     }
 
-    get(id: string | null , cancelToken?: CancelToken | undefined): Promise<Aquarium> {
+    get(id: string | null, cancelToken?: CancelToken | undefined): Promise<Aquarium> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -68,21 +68,21 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = Aquarium.fromJS(resultData200);
             return Promise.resolve<Aquarium>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -93,7 +93,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<Aquarium>(null as any);
     }
 
-    edit(id: string | null, aquarium: Aquarium , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAquarium> {
+    edit(id: string | null, aquarium: Aquarium, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAquarium> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -139,14 +139,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfAquarium.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfAquarium>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -157,7 +157,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfAquarium>(null as any);
     }
 
-    create(aquarium: Aquarium , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAquarium> {
+    create(aquarium: Aquarium, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAquarium> {
         let url_ = this.baseUrl + "/api/Aquarium";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -200,14 +200,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfAquarium.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfAquarium>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -218,7 +218,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfAquarium>(null as any);
     }
 
-    coralPOST(id: string | null, coral: Coral , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfCoral> {
+    coralPOST(id: string | null, coral: Coral, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfCoral> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Coral";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -264,14 +264,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfCoral.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfCoral>(result200);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -282,7 +282,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfCoral>(null as any);
     }
 
-    coralPUT(id: string | null, coralID: string | null, coral: Coral , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfCoral> {
+    coralPUT(id: string | null, coralID: string | null, coral: Coral, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfCoral> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Coral/{CoralID}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -331,14 +331,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfCoral.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfCoral>(result200);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -349,7 +349,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfCoral>(null as any);
     }
 
-    animalPOST(id: string | null, animal: Animal , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAnimal> {
+    animalPOST(id: string | null, animal: Animal, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAnimal> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Animal";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -395,14 +395,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfAnimal.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfAnimal>(result200);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -413,7 +413,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfAnimal>(null as any);
     }
 
-    animalPUT(id: string | null, animalID: string | null, animal: Animal , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAnimal> {
+    animalPUT(id: string | null, animalID: string | null, animal: Animal, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfAnimal> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Animal/{AnimalID}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -462,14 +462,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfAnimal.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfAnimal>(result200);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -480,7 +480,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfAnimal>(null as any);
     }
 
-    forUser(  cancelToken?: CancelToken | undefined): Promise<AquariumUserResponse[]> {
+    forUser(cancelToken?: CancelToken | undefined): Promise<AquariumUserResponse[]> {
         let url_ = this.baseUrl + "/api/Aquarium/ForUser";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -519,13 +519,12 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(AquariumUserResponse.fromJS(item));
-            }
-            else {
+            } else {
                 result200 = <any>null;
             }
             return Promise.resolve<AquariumUserResponse[]>(result200);
@@ -533,7 +532,7 @@ export class AquariumClient extends AuthorizedApiBase {
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -544,7 +543,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<AquariumUserResponse[]>(null as any);
     }
 
-    picturePOST(id: string | null, description: string | null | undefined, formFile: FileParameter | null | undefined , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfPictureResponse> {
+    picturePOST(id: string | null, description: string | null | undefined, formFile: FileParameter | null | undefined, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfPictureResponse> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Picture";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -593,14 +592,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfPictureResponse.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfPictureResponse>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
-            let resultData400  = _responseText;
+            let resultData400 = _responseText;
             result400 = ProblemDetails.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
 
@@ -611,7 +610,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfPictureResponse>(null as any);
     }
 
-    pictureDELETE(id: string | null, pictureID: string | null , cancelToken?: CancelToken | undefined): Promise<ItemResultModel> {
+    pictureDELETE(id: string | null, pictureID: string | null, cancelToken?: CancelToken | undefined): Promise<ItemResultModel> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Picture/{PictureID}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -656,14 +655,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResultModel.fromJS(resultData200);
             return Promise.resolve<ItemResultModel>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
-            let resultData400  = _responseText;
+            let resultData400 = _responseText;
             result400 = ProblemDetails.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
 
@@ -674,7 +673,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResultModel>(null as any);
     }
 
-    getPicture(id: string | null, pictureID: string | null , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfPictureResponse> {
+    getPicture(id: string | null, pictureID: string | null, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfPictureResponse> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Picture/{PictureID}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -719,14 +718,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfPictureResponse.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfPictureResponse>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
-            let resultData400  = _responseText;
+            let resultData400 = _responseText;
             result400 = ProblemDetails.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
 
@@ -737,7 +736,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfPictureResponse>(null as any);
     }
 
-    pictureAll(id: string | null , cancelToken?: CancelToken | undefined): Promise<PictureResponse[]> {
+    pictureAll(id: string | null, cancelToken?: CancelToken | undefined): Promise<PictureResponse[]> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Pictures";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -779,13 +778,12 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(PictureResponse.fromJS(item));
-            }
-            else {
+            } else {
                 result200 = <any>null;
             }
             return Promise.resolve<PictureResponse[]>(result200);
@@ -797,7 +795,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<PictureResponse[]>(null as any);
     }
 
-    getCorals(id: string | null , cancelToken?: CancelToken | undefined): Promise<Coral[]> {
+    getCorals(id: string | null, cancelToken?: CancelToken | undefined): Promise<Coral[]> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Corals";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -839,13 +837,12 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(Coral.fromJS(item));
-            }
-            else {
+            } else {
                 result200 = <any>null;
             }
             return Promise.resolve<Coral[]>(result200);
@@ -853,7 +850,7 @@ export class AquariumClient extends AuthorizedApiBase {
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -864,7 +861,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<Coral[]>(null as any);
     }
 
-    getAnimals(id: string | null , cancelToken?: CancelToken | undefined): Promise<Animal[]> {
+    getAnimals(id: string | null, cancelToken?: CancelToken | undefined): Promise<Animal[]> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Animals";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -906,13 +903,12 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(Animal.fromJS(item));
-            }
-            else {
+            } else {
                 result200 = <any>null;
             }
             return Promise.resolve<Animal[]>(result200);
@@ -920,7 +916,7 @@ export class AquariumClient extends AuthorizedApiBase {
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -931,7 +927,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<Animal[]>(null as any);
     }
 
-    getCoral(id: string | null, coralId: string | null , cancelToken?: CancelToken | undefined): Promise<Coral> {
+    getCoral(id: string | null, coralId: string | null, cancelToken?: CancelToken | undefined): Promise<Coral> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Coral/{CoralId}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -976,14 +972,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = Coral.fromJS(resultData200);
             return Promise.resolve<Coral>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -994,7 +990,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<Coral>(null as any);
     }
 
-    getAnimal(id: string | null, animalId: string | null , cancelToken?: CancelToken | undefined): Promise<Animal> {
+    getAnimal(id: string | null, animalId: string | null, cancelToken?: CancelToken | undefined): Promise<Animal> {
         let url_ = this.baseUrl + "/api/Aquarium/{id}/Animal/{AnimalId}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1039,14 +1035,14 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = Animal.fromJS(resultData200);
             return Promise.resolve<Animal>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -1057,7 +1053,7 @@ export class AquariumClient extends AuthorizedApiBase {
         return Promise.resolve<Animal>(null as any);
     }
 
-    getAll(  cancelToken?: CancelToken | undefined): Promise<Aquarium[]> {
+    getAll(cancelToken?: CancelToken | undefined): Promise<Aquarium[]> {
         let url_ = this.baseUrl + "/api/Aquarium/All";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1096,13 +1092,12 @@ export class AquariumClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(Aquarium.fromJS(item));
-            }
-            else {
+            } else {
                 result200 = <any>null;
             }
             return Promise.resolve<Aquarium[]>(result200);
@@ -1110,14 +1105,14 @@ export class AquariumClient extends AuthorizedApiBase {
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -1144,7 +1139,7 @@ export class UserClient extends AuthorizedApiBase {
 
     }
 
-    login(cred: LoginRequest , cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfUserResponse> {
+    login(cred: LoginRequest, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfUserResponse> {
         let url_ = this.baseUrl + "/api/User/Login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1187,14 +1182,14 @@ export class UserClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = ItemResponseModelOfUserResponse.fromJS(resultData200);
             return Promise.resolve<ItemResponseModelOfUserResponse>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -1205,7 +1200,7 @@ export class UserClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfUserResponse>(null as any);
     }
 
-    register(cred: User , cancelToken?: CancelToken | undefined): Promise<User> {
+    register(cred: User, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfUser> {
         let url_ = this.baseUrl + "/api/User/Register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1235,7 +1230,7 @@ export class UserClient extends AuthorizedApiBase {
         });
     }
 
-    protected processRegister(response: AxiosResponse): Promise<User> {
+    protected processRegister(response: AxiosResponse): Promise<ItemResponseModelOfUser> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1248,14 +1243,14 @@ export class UserClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = User.fromJS(resultData200);
-            return Promise.resolve<User>(result200);
+            let resultData200 = _responseText;
+            result200 = ItemResponseModelOfUser.fromJS(resultData200);
+            return Promise.resolve<ItemResponseModelOfUser>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -1263,10 +1258,10 @@ export class UserClient extends AuthorizedApiBase {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<User>(null as any);
+        return Promise.resolve<ItemResponseModelOfUser>(null as any);
     }
 
-    updateUser(id: string | null, cred: User , cancelToken?: CancelToken | undefined): Promise<User> {
+    updateUser(id: string | null, cred: User, cancelToken?: CancelToken | undefined): Promise<User> {
         let url_ = this.baseUrl + "/api/User/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1312,14 +1307,14 @@ export class UserClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = User.fromJS(resultData200);
             return Promise.resolve<User>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
@@ -1330,7 +1325,7 @@ export class UserClient extends AuthorizedApiBase {
         return Promise.resolve<User>(null as any);
     }
 
-    get(id: string | null , cancelToken?: CancelToken | undefined): Promise<User> {
+    get(id: string | null, cancelToken?: CancelToken | undefined): Promise<User> {
         let url_ = this.baseUrl + "/api/User/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1372,21 +1367,21 @@ export class UserClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             result200 = User.fromJS(resultData200);
             return Promise.resolve<User>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -1397,7 +1392,7 @@ export class UserClient extends AuthorizedApiBase {
         return Promise.resolve<User>(null as any);
     }
 
-    getAll(  cancelToken?: CancelToken | undefined): Promise<User[]> {
+    getAll(cancelToken?: CancelToken | undefined): Promise<User[]> {
         let url_ = this.baseUrl + "/api/User/All";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1436,13 +1431,12 @@ export class UserClient extends AuthorizedApiBase {
         if (status === 200) {
             const _responseText = response.data;
             let result200: any = null;
-            let resultData200  = _responseText;
+            let resultData200 = _responseText;
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(User.fromJS(item));
-            }
-            else {
+            } else {
                 result200 = <any>null;
             }
             return Promise.resolve<User[]>(result200);
@@ -1450,14 +1444,14 @@ export class UserClient extends AuthorizedApiBase {
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
-            let resultData401  = _responseText;
+            let resultData401 = _responseText;
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("A server side error occurred.", status, _responseText, _headers, result401);
 
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
-            let resultData404  = _responseText;
+            let resultData404 = _responseText;
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
 
@@ -2165,6 +2159,40 @@ export interface IItemResponseModelOfUserResponse extends IResponseModel {
     data?: UserResponse;
 }
 
+// ToDo Read
+export class ItemResponseModelOfUser extends ResponseModel implements IItemResponseModelOfUser {
+    data?: User;
+
+    constructor(data?: IItemResponseModelOfUser) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.data = _data["data"] ? User.fromJS(_data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ItemResponseModelOfUserResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ItemResponseModelOfUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IItemResponseModelOfUser extends IResponseModel {
+    data?: User;
+}
+
 export class UserResponse implements IUserResponse {
     user?: User;
     authenticationInformation?: AuthenticationInformation;
@@ -2367,7 +2395,9 @@ export class ApiException extends Error {
     }
 }
 
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
+function throwException(message: string, status: number, response: string, headers: {
+    [key: string]: any;
+}, result?: any): any {
     if (result !== null && result !== undefined)
         throw result;
     else
@@ -2377,4 +2407,3 @@ function throwException(message: string, status: number, response: string, heade
 function isAxiosError(obj: any | undefined): obj is AxiosError {
     return obj && obj.isAxiosError === true;
 }
-
