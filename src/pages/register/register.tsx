@@ -20,6 +20,7 @@ import {IConfig} from "../../services/rest/iconfig";
 import config from '../../services/rest/server-config';
 import {Appstorage} from "../../services/utils/appstorage";
 
+
 type formData = Readonly<User>;
 
 const formDescription: FormDescription<formData> = {
