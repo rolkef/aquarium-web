@@ -1200,7 +1200,7 @@ export class UserClient extends AuthorizedApiBase {
         return Promise.resolve<ItemResponseModelOfUserResponse>(null as any);
     }
 
-    register(cred: User, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfUser> {
+    register(cred: User, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfUserResponse> {
         let url_ = this.baseUrl + "/api/User/Register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1230,7 +1230,7 @@ export class UserClient extends AuthorizedApiBase {
         });
     }
 
-    protected processRegister(response: AxiosResponse): Promise<ItemResponseModelOfUser> {
+    protected processRegister(response: AxiosResponse): Promise<ItemResponseModelOfUserResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1244,8 +1244,8 @@ export class UserClient extends AuthorizedApiBase {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200 = _responseText;
-            result200 = ItemResponseModelOfUser.fromJS(resultData200);
-            return Promise.resolve<ItemResponseModelOfUser>(result200);
+            result200 = ItemResponseModelOfUserResponse.fromJS(resultData200);
+            return Promise.resolve<ItemResponseModelOfUserResponse>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1258,7 +1258,7 @@ export class UserClient extends AuthorizedApiBase {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ItemResponseModelOfUser>(null as any);
+        return Promise.resolve<ItemResponseModelOfUserResponse>(null as any);
     }
 
     updateUser(id: string | null, cred: User, cancelToken?: CancelToken | undefined): Promise<User> {
@@ -2159,39 +2159,6 @@ export interface IItemResponseModelOfUserResponse extends IResponseModel {
     data?: UserResponse;
 }
 
-// ToDo Read
-export class ItemResponseModelOfUser extends ResponseModel implements IItemResponseModelOfUser {
-    data?: User;
-
-    constructor(data?: IItemResponseModelOfUser) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.data = _data["data"] ? User.fromJS(_data["data"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ItemResponseModelOfUserResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new ItemResponseModelOfUser();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data;
-    }
-}
-
-export interface IItemResponseModelOfUser extends IResponseModel {
-    data?: User;
-}
 
 export class UserResponse implements IUserResponse {
     user?: User;
