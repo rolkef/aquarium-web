@@ -1,61 +1,54 @@
+import React, {useEffect, useState} from "react";
 import {RouteComponentProps} from "react-router";
 import {RootState} from "../../services/reducers";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    AnimalResult,
-    CoralResult,
-    fetchAnimalAction,
-    fetchCoralAction,
-} from "../../services/actions/items";
+import {AnimalsResult, CoralsResult, fetchAnimalsAction, fetchCoralsAction} from "../../services/actions/items";
 import {ThunkDispatch} from "redux-thunk";
-import React, {useEffect, useState} from "react";
+import {AnimalResult, CoralResult, fetchAnimalAction, fetchCoralAction} from "../../services/actions/items";
 import {
     IonButton,
-    IonButtons,
+    IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
     IonContent,
     IonHeader,
-    IonIcon, IonItem, IonLabel,
-    IonMenuButton,
-    IonPage, IonSpinner,
+    IonIcon,
+    IonItem, IonLabel,
+    IonMenuButton, IonPage, IonSpinner,
     IonTitle, IonToast,
     IonToolbar
 } from "@ionic/react";
-import {fish, flower} from "ionicons/icons";
+import {create, fish, flower} from "ionicons/icons";
+import {Animal, Coral} from "../../services/rest/interface";
 
-export default (mode: 'coral' | 'animal'): React.FC<RouteComponentProps<{ id: string }>> => ({history, match}) => {
+export default (mode: 'coral' | 'animal'): React.FC<RouteComponentProps<{ id: string; }>> => ({history, match}) => {
 
-    const {aquariumitem, coral, animal, isLoading, errorMessage} = useSelector((s: RootState) => s.items);
+    const {coral, animal, isLoading, errorMessage} = useSelector((s: RootState) => s.items);
     const token = useSelector((s: RootState) => s.user.authenticationInformation!.token || '');
     const dispatch = useDispatch();
-    const thunkCoralDispatch = dispatch as ThunkDispatch<RootState, null, CoralResult>;
-    const thunkAnimalDispatch = dispatch as ThunkDispatch<RootState, null, AnimalResult>;
-    const [itemName, setItemName] = useState('');
-    const [itemID, setItemID] = useState('');
+    const thunkDispatchCoral = dispatch as ThunkDispatch<RootState, null, CoralResult>;
+    const thunkDispatchAnimal = dispatch as ThunkDispatch<RootState, null, AnimalResult>;
+    const [item, setItem] = useState<Animal | Coral>();
 
     useEffect(() => {
-        if(itemID != match.params.id){
-            if(mode === 'coral'){
-                thunkCoralDispatch(fetchCoralAction(match.params.id)).then(() => {
-                    setItemName(coral?.name!);
-                    setItemID(coral?.id!);
-                });
+        if (item?.id !== match.params.id) {
+            if (mode == 'coral') {
+                thunkDispatchCoral(fetchCoralAction(match.params.id)).then((result) => {
+                    setItem(result.payload as Coral);
+                })
             }
-
-            if (mode === 'animal'){
-                thunkAnimalDispatch(fetchAnimalAction(match.params.id)).then(() => {
-                    setItemName(animal?.name!);
-                    setItemID(animal?.id!);
-                });
+            if (mode == 'animal') {
+                thunkDispatchAnimal(fetchAnimalAction(match.params.id)).then((result) => {
+                    setItem(result.payload as Animal);
+                })
             }
-
         }
-    }, [match.params.id]);
+    }, [])
+
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
-                        <IonMenuButton />
+                        <IonMenuButton/>
                     </IonButtons>
                     <IonButtons slot="primary">
                         <IonButton onClick={() => history.push('/animal/add')}>
@@ -65,21 +58,33 @@ export default (mode: 'coral' | 'animal'): React.FC<RouteComponentProps<{ id: st
                             <IonIcon slot="icon-only" icon={flower}/>
                         </IonButton>
                     </IonButtons>
-                    <IonTitle>Corals and Animals List</IonTitle>
+                    <IonTitle>{item?.name ?? 'Error showing item'}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <IonItem>
-                    <IonLabel>Corals</IonLabel>
-                </IonItem>
-
-                {isLoading ? <IonItem><IonSpinner />Loading Values...</IonItem> : <ListCorals/>}
-
-                <IonItem>
-                    <IonLabel>Animals</IonLabel>
-                </IonItem>
-
-                {isLoading ? <IonItem><IonSpinner />Loading Values...</IonItem> : <ListAnimals/>}
+                {item && <IonCard>
+                    <IonCardHeader>
+                        <IonToolbar>
+                            <IonCardTitle>{item?.name}</IonCardTitle>
+                            <IonCardSubtitle>Species: {item?.species}</IonCardSubtitle>
+                            <IonButton slot='primary'
+                                       onClick={() => history.push(`/${item instanceof Coral ? 'coral' : 'animal'}/edit/${match.params.id}`)}>
+                                <IonIcon slot="icon-only" icon={create}/>
+                            </IonButton>
+                        </IonToolbar>
+                    </IonCardHeader>
+                    <IonCardContent>
+                        {item instanceof Coral && <p>Type: {coral?.coralType}</p>}
+                        {item instanceof Animal &&
+                            <p>{animal?.isAlive
+                                ? 'Is alive'
+                                : `Died on: ${new Date(animal?.deathDate ?? '').toLocaleDateString()}`
+                            }</p>}
+                        <p>Amount: {item.amount}</p>
+                        <p>Inserted: {new Date(item.inserted ?? '').toLocaleDateString()}</p>
+                        <p>Description: {item.description}</p>
+                    </IonCardContent>
+                </IonCard>}
 
                 <IonToast
                     isOpen={errorMessage ? errorMessage.length > 0 : false}
@@ -91,5 +96,5 @@ export default (mode: 'coral' | 'animal'): React.FC<RouteComponentProps<{ id: st
 
             </IonContent>
         </IonPage>
-    );
-};
+    )
+}

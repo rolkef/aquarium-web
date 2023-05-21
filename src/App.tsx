@@ -28,6 +28,8 @@ import {SecureRoute} from "./components/SecureRoute";
 import ItemList from "./pages/items/ItemsList";
 import ItemsList from "./pages/items/ItemsList";
 import ItemDetail from "./pages/items/ItemDetail";
+import AddItem from "./pages/items/AddItem";
+import EditItem from "./pages/items/EditItem";
 
 setupIonicReact();
 
@@ -42,10 +44,12 @@ const App = () => {
                         <Route path="/login" component={Login} exact={true}/>
                         <Route path="/register" component={Register} exact={true}/>
                         <SecureRoute path="/items" component={ItemsList} exact={true}/>
-                        <SecureRoute path="coral/show/:id" component={ItemDetail('coral')} exact={true}/>
-                        <SecureRoute path="animal/show/:id" component={ItemDetail('animal')} exact={true}/>
-                        {/*<SecureRoute path="coral/add" component={AddEditItem('add', 'coral')} exact={true}/>*/}
-                        {/*<SecureRoute path="animal/add" component={AddEditItem('add', 'animal')} exact={true}/>*/}
+                        <SecureRoute path="/coral/show/:id" component={ItemDetail('coral')} exact={true}/>
+                        <SecureRoute path="/animal/show/:id" component={ItemDetail('animal')} exact={true}/>
+                        <SecureRoute path="/coral/add/" component={AddItem('coral')} exact={true}/>
+                        <SecureRoute path="/animal/add/" component={AddItem('animal')} exact={true}/>
+                        <SecureRoute path="/coral/edit/:id" component={EditItem('coral')} exact={true}/>
+                        <SecureRoute path="/animal/edit/:id" component={EditItem('animal')} exact={true}/>
 
                         <Route path="/" exact={true}>
                             <Redirect to="/home"/>
