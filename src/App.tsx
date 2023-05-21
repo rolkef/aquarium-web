@@ -24,6 +24,10 @@ import './theme/variables.css';
 import Login from "./pages/login/login";
 import Home from "./pages/home/Home";
 import Register from "./pages/register/register";
+import {SecureRoute} from "./components/SecureRoute";
+import ItemList from "./pages/items/ItemsList";
+import ItemsList from "./pages/items/ItemsList";
+import ItemDetail from "./pages/items/ItemDetail";
 
 setupIonicReact();
 
@@ -37,6 +41,12 @@ const App = () => {
                         <Route path="/home" component={Home} exact={true}/>
                         <Route path="/login" component={Login} exact={true}/>
                         <Route path="/register" component={Register} exact={true}/>
+                        <SecureRoute path="/items" component={ItemsList} exact={true}/>
+                        <SecureRoute path="coral/show/:id" component={ItemDetail('coral')} exact={true}/>
+                        <SecureRoute path="animal/show/:id" component={ItemDetail('animal')} exact={true}/>
+                        {/*<SecureRoute path="coral/add" component={AddEditItem('add', 'coral')} exact={true}/>*/}
+                        {/*<SecureRoute path="animal/add" component={AddEditItem('add', 'animal')} exact={true}/>*/}
+
                         <Route path="/" exact={true}>
                             <Redirect to="/home"/>
                         </Route>

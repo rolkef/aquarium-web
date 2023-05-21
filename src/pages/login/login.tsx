@@ -8,110 +8,91 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
-  IonPage,
+  IonPage
 } from '@ionic/react';
-import { RouteComponentProps } from 'react-router';
+
+import {FormDescription, BuildForm} from '../../services/utils/form-builder';
+import {RouteComponentProps} from 'react-router';
+import {executeDelayed} from '../../services/utils/async-helpers';
 import { useDispatch } from 'react-redux';
-import { BuildForm, FormDescription } from '../../services/utils/form-builder';
-import { loggedIn } from '../../services/actions/users';
-import { LoginRequest, UserClient } from '../../services/rest/interface';
-import { executeDelayed } from '../../services/utils/async-helpers';
-import { IConfig } from '../../services/rest/iconfig';
-import config from '../../services/rest/server-config';
-import { Appstorage } from '../../services/utils/appstorage';
+import store, {AppDispatch} from "../../services/store";
+import {LoginRequest, UserClient} from "../../services/rest/interface";
+import {loggedIn} from "../../services/actions/users";
+import {IConfig} from "../../services/rest/iconfig";
+import config from "../../services/rest/server-config"
+import {Appstorage} from "../../services/utils/appstorage";
 
 type formData = Readonly<LoginRequest>;
 
 const formDescription: FormDescription<formData> = {
   name: 'login',
   fields: [
-    {
-      name: 'username',
-      label: 'Email',
-      type: 'email',
-      position: 'floating',
-      color: 'primary',
-      validators: [Validator.required, Validator.email],
-    },
-    {
-      name: 'password',
-      label: 'Password',
-      type: 'password',
-      position: 'floating',
-      color: 'primary',
-      validators: [Validator.required],
-    },
+    {name: 'username', label: 'Email', type: 'email',
+      position: 'floating', color: 'primary', validators: [Validator.required, Validator.email]},
+    {name: 'password', label: 'Password', type: 'password',
+      position: 'floating', color: 'primary',validators: [Validator.required]}
   ],
-  submitLabel: 'Login',
-};
+  submitLabel: 'Login'
+}
 
-const { Form, loading, error } = BuildForm(formDescription);
+const {Form ,loading, error} = BuildForm(formDescription);
 
-export const Login: React.FunctionComponent<RouteComponentProps<any>> = (
-  props
-) => {
+export const Login: React.FunctionComponent<RouteComponentProps<any>> = (props) => {
+
   const dispatch = useDispatch();
 
-  const accessHeader = new IConfig();
-  const userClient = new UserClient(accessHeader, config.host);
+  const accessheader = new IConfig();
+  const userClient = new UserClient(accessheader, config.host)
 
   const submit = (loginData: LoginRequest) => {
     dispatch(loading(true));
-    userClient
-      .login(loginData)
-      .then((loginInfo: any) => {
-        console.log(loginInfo);
-        const authresponse = loggedIn(loginInfo);
-        dispatch(authresponse);
-        if (loginInfo.hasError === false) {
-          const JWTStore = new Appstorage();
-          Promise.all([
-            JWTStore.set(
-              'user',
-              JSON.stringify(
-                loginInfo.data.user && typeof loginInfo.data?.user === 'object'
-                  ? loginInfo.data?.user
-                  : {}
-              )
-            ),
-            JWTStore.set(
-              'authentication',
-              JSON.stringify(
-                loginInfo.data?.authenticationInformation &&
-                  typeof loginInfo.data?.authenticationInformation === 'object'
-                  ? loginInfo.data?.authenticationInformation
-                  : {}
-              )
-            ),
-          ]).then(() => {
-            executeDelayed(200, () => props.history.replace('/home'));
-          });
-        } else {
-          dispatch(error('Error while logging in: ' + loginInfo.message));
-        }
-      })
-      .catch((err: Error) => {
-        dispatch(error('Error while logging in: ' + err.message));
-      })
-      .finally(() => dispatch(loading(false)));
+    userClient.login(loginData)
+        .then((loginInfo) => {
+
+          if (loginInfo.hasError == false) {
+
+            const authresponse = loggedIn(loginInfo);
+            dispatch(authresponse);
+
+            const jwtStore = new Appstorage();
+
+            Promise.all([
+              jwtStore.set('user', JSON.stringify((loginInfo.data?.user && typeof loginInfo.data?.user === 'object'
+                  ? (loginInfo.data?.user) : {}))),
+              jwtStore.set('authentication', JSON.stringify((loginInfo.data?.authenticationInformation && typeof loginInfo.data?.authenticationInformation === 'object'
+                  ? (loginInfo.data?.authenticationInformation) : {})))
+            ]).then(
+                x =>
+                    executeDelayed(200,() => props.history.replace('/home'))
+            )
+
+          }
+          else
+          {
+            dispatch(error('Username or Password not correct'));
+          }
+        })
+        .catch((err: Error) => {
+          dispatch(error('Error while logging in: ' + err.message));
+        })
+        .finally(() => dispatch(loading(false)))
   };
-
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot='start'>
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton />
+            </IonButtons>
+            <IonTitle>Login</IonTitle>
+          </IonToolbar>
+        </IonHeader>
 
-      <IonContent>
-        <Form handleSubmit={submit} />
-      </IonContent>
-    </IonPage>
+        <IonContent>
+          <Form handleSubmit={submit}/>
+        </IonContent>
+      </IonPage>
   );
-};
+}
 
-export default Login;
+export default Login

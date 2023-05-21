@@ -74,6 +74,12 @@ const Menu: React.FC = () => {
   var securityItem = null;
 
   if (isNotExpired(authenticationInformation)) {
+    AddMenu({
+      title: 'Corals & Animals',
+      url: '/items',
+      iosIcon: listSharp,
+      mdIcon: listSharp
+    })
     securityItem = {
       title: 'Logout ' + user?.fullName,
       url: '/home',
@@ -109,7 +115,8 @@ const Menu: React.FC = () => {
         </IonHeader>
         <IonContent>
           <IonListHeader>Welcome</IonListHeader>
-          <IonNote>{isNotExpired(authenticationInformation) ? 'Hello ' + user?.fullName : 'Not Logged in'}</IonNote>
+          <IonNote>{isNotExpired(authenticationInformation) ? 'Hello ' + user?.fullName : 'Not Logged in'}
+          </IonNote>
           <IonList>
             {appPages.map((appPage, index) => {
               return (

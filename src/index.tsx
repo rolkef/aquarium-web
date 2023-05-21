@@ -20,7 +20,7 @@ loadUserData()
         return info.user && info.authentication ? store.dispatch(loggedIn({
             init(_data?: any): void {
             }, toJSON(data?: any): any {
-            }, user: info.user, authenticationInformation: info.authenticationInformation})): false
+            }, user: info.user, authenticationInformation: info.authentication})): false
     })
     .catch(e => console.log(e))
 
