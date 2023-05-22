@@ -3,17 +3,18 @@ class ServerConfig {
 
   //    private _datahost = "https://localhost:7170";
   //
-  private _baseurl = 'http://localhost:9080';
-  private _api = '/mgmt';
-  private _data = '';
+  private _baseurl = "http://localhost:9080";
+  private _api = "/mgmt";
+  private _data = "";
 
   public get host(): string {
     return this._baseurl + this._api;
-  }
+  };
 
   public get datahost(): string {
     return this._baseurl + this._data;
-  }
+  };
+
 }
 
-export default new ServerConfig();
+export default new ServerConfig()

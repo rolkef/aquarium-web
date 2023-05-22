@@ -8,69 +8,54 @@
 // ReSharper disable InconsistentNaming
 // @ts-nocheck
 
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  CancelToken,
-} from 'axios';
-import { AuthorizedApiBase, IConfig } from './iconfig';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
+import { AuthorizedApiBase, IConfig } from "./iconfig";
 
 export class FakeClient extends AuthorizedApiBase {
   private instance: AxiosInstance;
   private baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-  constructor(
-    configuration: IConfig,
-    baseUrl?: string,
-    instance?: AxiosInstance
-  ) {
+  constructor(configuration: IConfig, baseUrl?: string, instance?: AxiosInstance) {
+
     super(configuration);
 
     this.instance = instance ? instance : axios.create();
 
-    this.baseUrl =
-      baseUrl !== undefined && baseUrl !== null
-        ? baseUrl
-        : 'http://localhost:5001';
+    this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:5001";
+
   }
 
   seed(cancelToken?: CancelToken | undefined): Promise<boolean> {
-    let url_ = this.baseUrl + '/data/Fake/Seed';
-    url_ = url_.replace(/[?&]$/, '');
+    let url_ = this.baseUrl + "/data/Fake/Seed";
+    url_ = url_.replace(/[?&]$/, "");
 
     let options_: AxiosRequestConfig = {
-      method: 'GET',
+      method: "GET",
       url: url_,
       headers: {
-        Accept: 'application/json',
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processSeed(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processSeed(_response);
+    });
   }
 
   protected processSeed(response: AxiosResponse): Promise<boolean> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -84,14 +69,10 @@ export class FakeClient extends AuthorizedApiBase {
       result200 = resultData200 !== undefined ? resultData200 : <any>null;
 
       return Promise.resolve<boolean>(result200);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<boolean>(null as any);
   }
@@ -100,69 +81,54 @@ export class FakeClient extends AuthorizedApiBase {
 export class ValueClient extends AuthorizedApiBase {
   private instance: AxiosInstance;
   private baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-  constructor(
-    configuration: IConfig,
-    baseUrl?: string,
-    instance?: AxiosInstance
-  ) {
+  constructor(configuration: IConfig, baseUrl?: string, instance?: AxiosInstance) {
+
     super(configuration);
 
     this.instance = instance ? instance : axios.create();
 
-    this.baseUrl =
-      baseUrl !== undefined && baseUrl !== null
-        ? baseUrl
-        : 'http://localhost:5001';
+    this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:5001";
+
   }
 
-  getLastValue(
-    aquarium: string | null,
-    datapoint: string | null,
-    cancelToken?: CancelToken | undefined
-  ): Promise<ValueReturnModelSingle> {
-    let url_ = this.baseUrl + '/data/Value/{Aquarium}/GetLastValue/{Datapoint}';
+  getLastValue(aquarium: string | null, datapoint: string | null, cancelToken?: CancelToken | undefined): Promise<ValueReturnModelSingle> {
+    let url_ = this.baseUrl + "/data/Value/{Aquarium}/GetLastValue/{Datapoint}";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
     if (datapoint === undefined || datapoint === null)
       throw new Error("The parameter 'datapoint' must be defined.");
-    url_ = url_.replace('{Datapoint}', encodeURIComponent('' + datapoint));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{Datapoint}", encodeURIComponent("" + datapoint));
+    url_ = url_.replace(/[?&]$/, "");
 
     let options_: AxiosRequestConfig = {
-      method: 'GET',
+      method: "GET",
       url: url_,
       headers: {
-        Accept: 'application/json',
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processGetLastValue(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processGetLastValue(_response);
+    });
   }
 
-  protected processGetLastValue(
-    response: AxiosResponse
-  ): Promise<ValueReturnModelSingle> {
+  protected processGetLastValue(response: AxiosResponse): Promise<ValueReturnModelSingle> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -175,71 +141,54 @@ export class ValueClient extends AuthorizedApiBase {
       let resultData200 = _responseText;
       result200 = ValueReturnModelSingle.fromJS(resultData200);
       return Promise.resolve<ValueReturnModelSingle>(result200);
+
     } else if (status === 404) {
       const _responseText = response.data;
       let result404: any = null;
       let resultData404 = _responseText;
       result404 = ProblemDetails.fromJS(resultData404);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result404
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<ValueReturnModelSingle>(null as any);
   }
 
-  getLastValues(
-    aquarium: string | null,
-    cancelToken?: CancelToken | undefined
-  ): Promise<ValueReturnModelSingle[]> {
-    let url_ = this.baseUrl + '/data/Value/{Aquarium}/GetLastValues';
+  getLastValues(aquarium: string | null, cancelToken?: CancelToken | undefined): Promise<ValueReturnModelSingle[]> {
+    let url_ = this.baseUrl + "/data/Value/{Aquarium}/GetLastValues";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
+    url_ = url_.replace(/[?&]$/, "");
 
     let options_: AxiosRequestConfig = {
-      method: 'GET',
+      method: "GET",
       url: url_,
       headers: {
-        Accept: 'application/json',
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processGetLastValues(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processGetLastValues(_response);
+    });
   }
 
-  protected processGetLastValues(
-    response: AxiosResponse
-  ): Promise<ValueReturnModelSingle[]> {
+  protected processGetLastValues(response: AxiosResponse): Promise<ValueReturnModelSingle[]> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -254,30 +203,22 @@ export class ValueClient extends AuthorizedApiBase {
         result200 = [] as any;
         for (let item of resultData200)
           result200!.push(ValueReturnModelSingle.fromJS(item));
-      } else {
+      }
+      else {
         result200 = <any>null;
       }
       return Promise.resolve<ValueReturnModelSingle[]>(result200);
+
     } else if (status === 404) {
       const _responseText = response.data;
       let result404: any = null;
       let resultData404 = _responseText;
       result404 = ProblemDetails.fromJS(resultData404);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result404
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<ValueReturnModelSingle[]>(null as any);
   }
@@ -286,63 +227,51 @@ export class ValueClient extends AuthorizedApiBase {
 export class DeviceClient extends AuthorizedApiBase {
   private instance: AxiosInstance;
   private baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-  constructor(
-    configuration: IConfig,
-    baseUrl?: string,
-    instance?: AxiosInstance
-  ) {
+  constructor(configuration: IConfig, baseUrl?: string, instance?: AxiosInstance) {
+
     super(configuration);
 
     this.instance = instance ? instance : axios.create();
 
-    this.baseUrl =
-      baseUrl !== undefined && baseUrl !== null
-        ? baseUrl
-        : 'http://localhost:5001';
+    this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:5001";
+
   }
 
-  get(
-    aquarium: string | null,
-    cancelToken?: CancelToken | undefined
-  ): Promise<Device[]> {
-    let url_ = this.baseUrl + '/data/Device/{Aquarium}/Devices';
+  get(aquarium: string | null, cancelToken?: CancelToken | undefined): Promise<Device[]> {
+    let url_ = this.baseUrl + "/data/Device/{Aquarium}/Devices";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
+    url_ = url_.replace(/[?&]$/, "");
 
     let options_: AxiosRequestConfig = {
-      method: 'GET',
+      method: "GET",
       url: url_,
       headers: {
-        Accept: 'application/json',
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processGet(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processGet(_response);
+    });
   }
 
   protected processGet(response: AxiosResponse): Promise<Device[]> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -355,81 +284,65 @@ export class DeviceClient extends AuthorizedApiBase {
       let resultData200 = _responseText;
       if (Array.isArray(resultData200)) {
         result200 = [] as any;
-        for (let item of resultData200) result200!.push(Device.fromJS(item));
-      } else {
+        for (let item of resultData200)
+          result200!.push(Device.fromJS(item));
+      }
+      else {
         result200 = <any>null;
       }
       return Promise.resolve<Device[]>(result200);
+
     } else if (status === 401) {
       const _responseText = response.data;
       let result401: any = null;
       let resultData401 = _responseText;
       result401 = ProblemDetails.fromJS(resultData401);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result401
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<Device[]>(null as any);
   }
 
-  modbusDevicePOST(
-    aquarium: string | null,
-    modbus: ModbusDevice,
-    cancelToken?: CancelToken | undefined
-  ): Promise<ItemResponseModelOfModbusDevice> {
-    let url_ = this.baseUrl + '/data/Device/{Aquarium}/ModbusDevice';
+  modbusDevicePOST(aquarium: string | null, modbus: ModbusDevice, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfModbusDevice> {
+    let url_ = this.baseUrl + "/data/Device/{Aquarium}/ModbusDevice";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
+    url_ = url_.replace(/[?&]$/, "");
 
     const content_ = JSON.stringify(modbus);
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: 'POST',
+      method: "POST",
       url: url_,
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processModbusDevicePOST(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processModbusDevicePOST(_response);
+    });
   }
 
-  protected processModbusDevicePOST(
-    response: AxiosResponse
-  ): Promise<ItemResponseModelOfModbusDevice> {
+  protected processModbusDevicePOST(response: AxiosResponse): Promise<ItemResponseModelOfModbusDevice> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -442,76 +355,58 @@ export class DeviceClient extends AuthorizedApiBase {
       let resultData200 = _responseText;
       result200 = ItemResponseModelOfModbusDevice.fromJS(resultData200);
       return Promise.resolve<ItemResponseModelOfModbusDevice>(result200);
+
     } else if (status === 404) {
       const _responseText = response.data;
       let result404: any = null;
       let resultData404 = _responseText;
       result404 = ProblemDetails.fromJS(resultData404);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result404
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<ItemResponseModelOfModbusDevice>(null as any);
   }
 
-  mQTTDevicePOST(
-    aquarium: string | null,
-    modbus: MQTTDevice,
-    cancelToken?: CancelToken | undefined
-  ): Promise<ItemResponseModelOfMQTTDevice> {
-    let url_ = this.baseUrl + '/data/Device/{Aquarium}/MQTTDevice';
+  mQTTDevicePOST(aquarium: string | null, modbus: MQTTDevice, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfMQTTDevice> {
+    let url_ = this.baseUrl + "/data/Device/{Aquarium}/MQTTDevice";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
+    url_ = url_.replace(/[?&]$/, "");
 
     const content_ = JSON.stringify(modbus);
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: 'POST',
+      method: "POST",
       url: url_,
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processMQTTDevicePOST(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processMQTTDevicePOST(_response);
+    });
   }
 
-  protected processMQTTDevicePOST(
-    response: AxiosResponse
-  ): Promise<ItemResponseModelOfMQTTDevice> {
+  protected processMQTTDevicePOST(response: AxiosResponse): Promise<ItemResponseModelOfMQTTDevice> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -524,80 +419,61 @@ export class DeviceClient extends AuthorizedApiBase {
       let resultData200 = _responseText;
       result200 = ItemResponseModelOfMQTTDevice.fromJS(resultData200);
       return Promise.resolve<ItemResponseModelOfMQTTDevice>(result200);
+
     } else if (status === 404) {
       const _responseText = response.data;
       let result404: any = null;
       let resultData404 = _responseText;
       result404 = ProblemDetails.fromJS(resultData404);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result404
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<ItemResponseModelOfMQTTDevice>(null as any);
   }
 
-  modbusDevicePUT(
-    aquarium: string | null,
-    iD: string | null,
-    modbus: ModbusDevice,
-    cancelToken?: CancelToken | undefined
-  ): Promise<ItemResponseModelOfDevice> {
-    let url_ = this.baseUrl + '/data/Device/{Aquarium}/ModbusDevice/{ID}';
+  modbusDevicePUT(aquarium: string | null, iD: string | null, modbus: ModbusDevice, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfDevice> {
+    let url_ = this.baseUrl + "/data/Device/{Aquarium}/ModbusDevice/{ID}";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
     if (iD === undefined || iD === null)
       throw new Error("The parameter 'iD' must be defined.");
-    url_ = url_.replace('{ID}', encodeURIComponent('' + iD));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{ID}", encodeURIComponent("" + iD));
+    url_ = url_.replace(/[?&]$/, "");
 
     const content_ = JSON.stringify(modbus);
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: 'PUT',
+      method: "PUT",
       url: url_,
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processModbusDevicePUT(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processModbusDevicePUT(_response);
+    });
   }
 
-  protected processModbusDevicePUT(
-    response: AxiosResponse
-  ): Promise<ItemResponseModelOfDevice> {
+  protected processModbusDevicePUT(response: AxiosResponse): Promise<ItemResponseModelOfDevice> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -610,80 +486,61 @@ export class DeviceClient extends AuthorizedApiBase {
       let resultData200 = _responseText;
       result200 = ItemResponseModelOfDevice.fromJS(resultData200);
       return Promise.resolve<ItemResponseModelOfDevice>(result200);
+
     } else if (status === 404) {
       const _responseText = response.data;
       let result404: any = null;
       let resultData404 = _responseText;
       result404 = ProblemDetails.fromJS(resultData404);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result404
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<ItemResponseModelOfDevice>(null as any);
   }
 
-  mQTTDevicePUT(
-    aquarium: string | null,
-    iD: string | null,
-    mqtt: MQTTDevice,
-    cancelToken?: CancelToken | undefined
-  ): Promise<ItemResponseModelOfDevice> {
-    let url_ = this.baseUrl + '/data/Device/{Aquarium}/MQTTDevice/{ID}';
+  mQTTDevicePUT(aquarium: string | null, iD: string | null, mqtt: MQTTDevice, cancelToken?: CancelToken | undefined): Promise<ItemResponseModelOfDevice> {
+    let url_ = this.baseUrl + "/data/Device/{Aquarium}/MQTTDevice/{ID}";
     if (aquarium === undefined || aquarium === null)
       throw new Error("The parameter 'aquarium' must be defined.");
-    url_ = url_.replace('{Aquarium}', encodeURIComponent('' + aquarium));
+    url_ = url_.replace("{Aquarium}", encodeURIComponent("" + aquarium));
     if (iD === undefined || iD === null)
       throw new Error("The parameter 'iD' must be defined.");
-    url_ = url_.replace('{ID}', encodeURIComponent('' + iD));
-    url_ = url_.replace(/[?&]$/, '');
+    url_ = url_.replace("{ID}", encodeURIComponent("" + iD));
+    url_ = url_.replace(/[?&]$/, "");
 
     const content_ = JSON.stringify(mqtt);
 
     let options_: AxiosRequestConfig = {
       data: content_,
-      method: 'PUT',
+      method: "PUT",
       url: url_,
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
-      cancelToken,
+      cancelToken
     };
 
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.instance.request(transformedOptions_);
-      })
-      .catch((_error: any) => {
-        if (isAxiosError(_error) && _error.response) {
-          return _error.response;
-        } else {
-          throw _error;
-        }
-      })
-      .then((_response: AxiosResponse) => {
-        return this.processMQTTDevicePUT(_response);
-      });
+    return this.transformOptions(options_).then(transformedOptions_ => {
+      return this.instance.request(transformedOptions_);
+    }).catch((_error: any) => {
+      if (isAxiosError(_error) && _error.response) {
+        return _error.response;
+      } else {
+        throw _error;
+      }
+    }).then((_response: AxiosResponse) => {
+      return this.processMQTTDevicePUT(_response);
+    });
   }
 
-  protected processMQTTDevicePUT(
-    response: AxiosResponse
-  ): Promise<ItemResponseModelOfDevice> {
+  protected processMQTTDevicePUT(response: AxiosResponse): Promise<ItemResponseModelOfDevice> {
     const status = response.status;
     let _headers: any = {};
-    if (response.headers && typeof response.headers === 'object') {
+    if (response.headers && typeof response.headers === "object") {
       for (let k in response.headers) {
         if (response.headers.hasOwnProperty(k)) {
           _headers[k] = response.headers[k];
@@ -696,26 +553,17 @@ export class DeviceClient extends AuthorizedApiBase {
       let resultData200 = _responseText;
       result200 = ItemResponseModelOfDevice.fromJS(resultData200);
       return Promise.resolve<ItemResponseModelOfDevice>(result200);
+
     } else if (status === 404) {
       const _responseText = response.data;
       let result404: any = null;
       let resultData404 = _responseText;
       result404 = ProblemDetails.fromJS(resultData404);
-      return throwException(
-        'A server side error occurred.',
-        status,
-        _responseText,
-        _headers,
-        result404
-      );
+      return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+
     } else if (status !== 200 && status !== 204) {
       const _responseText = response.data;
-      return throwException(
-        'An unexpected server error occurred.',
-        status,
-        _responseText,
-        _headers
-      );
+      return throwException("An unexpected server error occurred.", status, _responseText, _headers);
     }
     return Promise.resolve<ItemResponseModelOfDevice>(null as any);
   }
@@ -738,9 +586,7 @@ export class ValueReturnModelBase implements IValueReturnModelBase {
 
   init(_data?: any) {
     if (_data) {
-      this.dataPoint = _data['dataPoint']
-        ? DataPoint.fromJS(_data['dataPoint'])
-        : new DataPoint();
+      this.dataPoint = _data["dataPoint"] ? DataPoint.fromJS(_data["dataPoint"]) : new DataPoint();
     }
   }
 
@@ -753,9 +599,7 @@ export class ValueReturnModelBase implements IValueReturnModelBase {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['dataPoint'] = this.dataPoint
-      ? this.dataPoint.toJSON()
-      : <any>undefined;
+    data["dataPoint"] = this.dataPoint ? this.dataPoint.toJSON() : <any>undefined;
     return data;
   }
 }
@@ -764,10 +608,7 @@ export interface IValueReturnModelBase {
   dataPoint: DataPoint;
 }
 
-export class ValueReturnModelSingle
-  extends ValueReturnModelBase
-  implements IValueReturnModelSingle
-{
+export class ValueReturnModelSingle extends ValueReturnModelBase implements IValueReturnModelSingle {
   sample!: Sample;
   visuals!: VisualsReturnModel;
 
@@ -778,12 +619,8 @@ export class ValueReturnModelSingle
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.sample = _data['sample']
-        ? Sample.fromJS(_data['sample'])
-        : <any>undefined;
-      this.visuals = _data['visuals']
-        ? VisualsReturnModel.fromJS(_data['visuals'])
-        : <any>undefined;
+      this.sample = _data["sample"] ? Sample.fromJS(_data["sample"]) : <any>undefined;
+      this.visuals = _data["visuals"] ? VisualsReturnModel.fromJS(_data["visuals"]) : <any>undefined;
     }
   }
 
@@ -796,8 +633,8 @@ export class ValueReturnModelSingle
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['sample'] = this.sample ? this.sample.toJSON() : <any>undefined;
-    data['visuals'] = this.visuals ? this.visuals.toJSON() : <any>undefined;
+    data["sample"] = this.sample ? this.sample.toJSON() : <any>undefined;
+    data["visuals"] = this.visuals ? this.visuals.toJSON() : <any>undefined;
     super.toJSON(data);
     return data;
   }
@@ -822,27 +659,25 @@ export abstract class Sample implements ISample {
           (<any>this)[property] = (<any>data)[property];
       }
     }
-    this._discriminator = 'Sample';
+    this._discriminator = "Sample";
   }
 
   init(_data?: any) {
     if (_data) {
-      this.tag = _data['tag'];
-      this.timeStamp = _data['timeStamp']
-        ? new Date(_data['timeStamp'].toString())
-        : <any>undefined;
-      this.value = _data['value'];
+      this.tag = _data["tag"];
+      this.timeStamp = _data["timeStamp"] ? new Date(_data["timeStamp"].toString()) : <any>undefined;
+      this.value = _data["value"];
     }
   }
 
   static fromJS(data: any): Sample {
     data = typeof data === 'object' ? data : {};
-    if (data['discriminator'] === 'BinarySample') {
+    if (data["discriminator"] === "BinarySample") {
       let result = new BinarySample();
       result.init(data);
       return result;
     }
-    if (data['discriminator'] === 'NumericSample') {
+    if (data["discriminator"] === "NumericSample") {
       let result = new NumericSample();
       result.init(data);
       return result;
@@ -852,12 +687,10 @@ export abstract class Sample implements ISample {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['discriminator'] = this._discriminator;
-    data['tag'] = this.tag;
-    data['timeStamp'] = this.timeStamp
-      ? this.timeStamp.toISOString()
-      : <any>undefined;
-    data['value'] = this.value;
+    data["discriminator"] = this._discriminator;
+    data["tag"] = this.tag;
+    data["timeStamp"] = this.timeStamp ? this.timeStamp.toISOString() : <any>undefined;
+    data["value"] = this.value;
     return data;
   }
 }
@@ -869,9 +702,10 @@ export interface ISample {
 }
 
 export class BinarySample extends Sample implements IBinarySample {
+
   constructor(data?: IBinarySample) {
     super(data);
-    this._discriminator = 'BinarySample';
+    this._discriminator = "BinarySample";
   }
 
   init(_data?: any) {
@@ -892,12 +726,14 @@ export class BinarySample extends Sample implements IBinarySample {
   }
 }
 
-export interface IBinarySample extends ISample {}
+export interface IBinarySample extends ISample {
+}
 
 export class NumericSample extends Sample implements INumericSample {
+
   constructor(data?: INumericSample) {
     super(data);
-    this._discriminator = 'NumericSample';
+    this._discriminator = "NumericSample";
   }
 
   init(_data?: any) {
@@ -918,7 +754,8 @@ export class NumericSample extends Sample implements INumericSample {
   }
 }
 
-export interface INumericSample extends ISample {}
+export interface INumericSample extends ISample {
+}
 
 export abstract class VisualsReturnModel implements IVisualsReturnModel {
   icon!: string;
@@ -932,36 +769,34 @@ export abstract class VisualsReturnModel implements IVisualsReturnModel {
           (<any>this)[property] = (<any>data)[property];
       }
     }
-    this._discriminator = 'VisualsReturnModel';
+    this._discriminator = "VisualsReturnModel";
   }
 
   init(_data?: any) {
     if (_data) {
-      this.icon = _data['icon'];
+      this.icon = _data["icon"];
     }
   }
 
   static fromJS(data: any): VisualsReturnModel {
     data = typeof data === 'object' ? data : {};
-    if (data['discriminator'] === 'VisualsNumericReturnModel') {
+    if (data["discriminator"] === "VisualsNumericReturnModel") {
       let result = new VisualsNumericReturnModel();
       result.init(data);
       return result;
     }
-    if (data['discriminator'] === 'VisualsBinaryReturnModel') {
+    if (data["discriminator"] === "VisualsBinaryReturnModel") {
       let result = new VisualsBinaryReturnModel();
       result.init(data);
       return result;
     }
-    throw new Error(
-      "The abstract class 'VisualsReturnModel' cannot be instantiated."
-    );
+    throw new Error("The abstract class 'VisualsReturnModel' cannot be instantiated.");
   }
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['discriminator'] = this._discriminator;
-    data['icon'] = this.icon;
+    data["discriminator"] = this._discriminator;
+    data["icon"] = this.icon;
     return data;
   }
 }
@@ -970,25 +805,22 @@ export interface IVisualsReturnModel {
   icon: string;
 }
 
-export class VisualsNumericReturnModel
-  extends VisualsReturnModel
-  implements IVisualsNumericReturnModel
-{
+export class VisualsNumericReturnModel extends VisualsReturnModel implements IVisualsNumericReturnModel {
   minValue!: number;
   maxValue!: number;
   unit!: string;
 
   constructor(data?: IVisualsNumericReturnModel) {
     super(data);
-    this._discriminator = 'VisualsNumericReturnModel';
+    this._discriminator = "VisualsNumericReturnModel";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.minValue = _data['minValue'];
-      this.maxValue = _data['maxValue'];
-      this.unit = _data['unit'];
+      this.minValue = _data["minValue"];
+      this.maxValue = _data["maxValue"];
+      this.unit = _data["unit"];
     }
   }
 
@@ -1001,9 +833,9 @@ export class VisualsNumericReturnModel
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['minValue'] = this.minValue;
-    data['maxValue'] = this.maxValue;
-    data['unit'] = this.unit;
+    data["minValue"] = this.minValue;
+    data["maxValue"] = this.maxValue;
+    data["unit"] = this.unit;
     super.toJSON(data);
     return data;
   }
@@ -1015,21 +847,18 @@ export interface IVisualsNumericReturnModel extends IVisualsReturnModel {
   unit: string;
 }
 
-export class VisualsBinaryReturnModel
-  extends VisualsReturnModel
-  implements IVisualsBinaryReturnModel
-{
+export class VisualsBinaryReturnModel extends VisualsReturnModel implements IVisualsBinaryReturnModel {
   finalText!: string;
 
   constructor(data?: IVisualsBinaryReturnModel) {
     super(data);
-    this._discriminator = 'VisualsBinaryReturnModel';
+    this._discriminator = "VisualsBinaryReturnModel";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.finalText = _data['finalText'];
+      this.finalText = _data["finalText"];
     }
   }
 
@@ -1042,7 +871,7 @@ export class VisualsBinaryReturnModel
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['finalText'] = this.finalText;
+    data["finalText"] = this.finalText;
     super.toJSON(data);
     return data;
   }
@@ -1066,7 +895,7 @@ export abstract class Entity implements IEntity {
 
   init(_data?: any) {
     if (_data) {
-      this.id = _data['id'];
+      this.id = _data["id"];
     }
   }
 
@@ -1077,7 +906,7 @@ export abstract class Entity implements IEntity {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['id'] = this.id;
+    data["id"] = this.id;
     return data;
   }
 }
@@ -1098,29 +927,29 @@ export class DataPoint extends Entity implements IDataPoint {
 
   constructor(data?: IDataPoint) {
     super(data);
-    this._discriminator = 'DataPoint';
+    this._discriminator = "DataPoint";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.name = _data['name'];
-      this.dataType = _data['dataType'];
-      this.offset = _data['offset'];
-      this.description = _data['description'];
-      this.deviceName = _data['deviceName'];
-      this.dataPointVisual = _data['dataPointVisual'];
+      this.name = _data["name"];
+      this.dataType = _data["dataType"];
+      this.offset = _data["offset"];
+      this.description = _data["description"];
+      this.deviceName = _data["deviceName"];
+      this.dataPointVisual = _data["dataPointVisual"];
     }
   }
 
   static fromJS(data: any): DataPoint {
     data = typeof data === 'object' ? data : {};
-    if (data['discriminator'] === 'ModbusDataPoint') {
+    if (data["discriminator"] === "ModbusDataPoint") {
       let result = new ModbusDataPoint();
       result.init(data);
       return result;
     }
-    if (data['discriminator'] === 'MQTTDataPoint') {
+    if (data["discriminator"] === "MQTTDataPoint") {
       let result = new MQTTDataPoint();
       result.init(data);
       return result;
@@ -1132,13 +961,13 @@ export class DataPoint extends Entity implements IDataPoint {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['discriminator'] = this._discriminator;
-    data['name'] = this.name;
-    data['dataType'] = this.dataType;
-    data['offset'] = this.offset;
-    data['description'] = this.description;
-    data['deviceName'] = this.deviceName;
-    data['dataPointVisual'] = this.dataPointVisual;
+    data["discriminator"] = this._discriminator;
+    data["name"] = this.name;
+    data["dataType"] = this.dataType;
+    data["offset"] = this.offset;
+    data["description"] = this.description;
+    data["deviceName"] = this.deviceName;
+    data["dataPointVisual"] = this.dataPointVisual;
     super.toJSON(data);
     return data;
   }
@@ -1154,9 +983,9 @@ export interface IDataPoint extends IEntity {
 }
 
 export enum DataType {
-  Boolean = 'Boolean',
-  Float = 'Float',
-  Integer = 'Integer',
+  Boolean = "Boolean",
+  Float = "Float",
+  Integer = "Integer",
 }
 
 export class ModbusDataPoint extends DataPoint implements IModbusDataPoint {
@@ -1167,16 +996,16 @@ export class ModbusDataPoint extends DataPoint implements IModbusDataPoint {
 
   constructor(data?: IModbusDataPoint) {
     super(data);
-    this._discriminator = 'ModbusDataPoint';
+    this._discriminator = "ModbusDataPoint";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.registerType = _data['registerType'];
-      this.readingType = _data['readingType'];
-      this.register = _data['register'];
-      this.registerCount = _data['registerCount'];
+      this.registerType = _data["registerType"];
+      this.readingType = _data["readingType"];
+      this.register = _data["register"];
+      this.registerCount = _data["registerCount"];
     }
   }
 
@@ -1189,10 +1018,10 @@ export class ModbusDataPoint extends DataPoint implements IModbusDataPoint {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['registerType'] = this.registerType;
-    data['readingType'] = this.readingType;
-    data['register'] = this.register;
-    data['registerCount'] = this.registerCount;
+    data["registerType"] = this.registerType;
+    data["readingType"] = this.readingType;
+    data["register"] = this.register;
+    data["registerCount"] = this.registerCount;
     super.toJSON(data);
     return data;
   }
@@ -1206,17 +1035,17 @@ export interface IModbusDataPoint extends IDataPoint {
 }
 
 export enum RegisterType {
-  InputRegister = 'InputRegister',
-  HoldingRegister = 'HoldingRegister',
-  Coil = 'Coil',
-  InputStatus = 'InputStatus',
-  WriteSingleCoil = 'WriteSingleCoil',
-  WriteSingleRegister = 'WriteSingleRegister',
+  InputRegister = "InputRegister",
+  HoldingRegister = "HoldingRegister",
+  Coil = "Coil",
+  InputStatus = "InputStatus",
+  WriteSingleCoil = "WriteSingleCoil",
+  WriteSingleRegister = "WriteSingleRegister",
 }
 
 export enum ReadingType {
-  LowToHigh = 'LowToHigh',
-  HighToLow = 'HighToLow',
+  LowToHigh = "LowToHigh",
+  HighToLow = "HighToLow",
 }
 
 export class MQTTDataPoint extends DataPoint implements IMQTTDataPoint {
@@ -1224,13 +1053,13 @@ export class MQTTDataPoint extends DataPoint implements IMQTTDataPoint {
 
   constructor(data?: IMQTTDataPoint) {
     super(data);
-    this._discriminator = 'MQTTDataPoint';
+    this._discriminator = "MQTTDataPoint";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.topicName = _data['topicName'];
+      this.topicName = _data["topicName"];
     }
   }
 
@@ -1243,7 +1072,7 @@ export class MQTTDataPoint extends DataPoint implements IMQTTDataPoint {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['topicName'] = this.topicName;
+    data["topicName"] = this.topicName;
     super.toJSON(data);
     return data;
   }
@@ -1259,7 +1088,7 @@ export class ProblemDetails implements IProblemDetails {
   status?: number | undefined;
   detail?: string | undefined;
   instance?: string | undefined;
-  extensions!: { [key: string]: any };
+  extensions!: { [key: string]: any; };
 
   constructor(data?: IProblemDetails) {
     if (data) {
@@ -1275,16 +1104,16 @@ export class ProblemDetails implements IProblemDetails {
 
   init(_data?: any) {
     if (_data) {
-      this.type = _data['type'];
-      this.title = _data['title'];
-      this.status = _data['status'];
-      this.detail = _data['detail'];
-      this.instance = _data['instance'];
-      if (_data['extensions']) {
+      this.type = _data["type"];
+      this.title = _data["title"];
+      this.status = _data["status"];
+      this.detail = _data["detail"];
+      this.instance = _data["instance"];
+      if (_data["extensions"]) {
         this.extensions = {} as any;
-        for (let key in _data['extensions']) {
-          if (_data['extensions'].hasOwnProperty(key))
-            (<any>this.extensions)![key] = _data['extensions'][key];
+        for (let key in _data["extensions"]) {
+          if (_data["extensions"].hasOwnProperty(key))
+            (<any>this.extensions)![key] = _data["extensions"][key];
         }
       }
     }
@@ -1299,16 +1128,16 @@ export class ProblemDetails implements IProblemDetails {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['type'] = this.type;
-    data['title'] = this.title;
-    data['status'] = this.status;
-    data['detail'] = this.detail;
-    data['instance'] = this.instance;
+    data["type"] = this.type;
+    data["title"] = this.title;
+    data["status"] = this.status;
+    data["detail"] = this.detail;
+    data["instance"] = this.instance;
     if (this.extensions) {
-      data['extensions'] = {};
+      data["extensions"] = {};
       for (let key in this.extensions) {
         if (this.extensions.hasOwnProperty(key))
-          (<any>data['extensions'])[key] = this.extensions[key];
+          (<any>data["extensions"])[key] = this.extensions[key];
       }
     }
     return data;
@@ -1321,7 +1150,7 @@ export interface IProblemDetails {
   status?: number | undefined;
   detail?: string | undefined;
   instance?: string | undefined;
-  extensions: { [key: string]: any };
+  extensions: { [key: string]: any; };
 }
 
 export class Device extends Entity implements IDevice {
@@ -1335,28 +1164,28 @@ export class Device extends Entity implements IDevice {
 
   constructor(data?: IDevice) {
     super(data);
-    this._discriminator = 'Device';
+    this._discriminator = "Device";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.deviceType = _data['deviceType'];
-      this.deviceName = _data['deviceName'];
-      this.deviceDescription = _data['deviceDescription'];
-      this.active = _data['active'];
-      this.aquarium = _data['aquarium'];
+      this.deviceType = _data["deviceType"];
+      this.deviceName = _data["deviceName"];
+      this.deviceDescription = _data["deviceDescription"];
+      this.active = _data["active"];
+      this.aquarium = _data["aquarium"];
     }
   }
 
   static fromJS(data: any): Device {
     data = typeof data === 'object' ? data : {};
-    if (data['discriminator'] === 'ModbusDevice') {
+    if (data["discriminator"] === "ModbusDevice") {
       let result = new ModbusDevice();
       result.init(data);
       return result;
     }
-    if (data['discriminator'] === 'MQTTDevice') {
+    if (data["discriminator"] === "MQTTDevice") {
       let result = new MQTTDevice();
       result.init(data);
       return result;
@@ -1368,12 +1197,12 @@ export class Device extends Entity implements IDevice {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['discriminator'] = this._discriminator;
-    data['deviceType'] = this.deviceType;
-    data['deviceName'] = this.deviceName;
-    data['deviceDescription'] = this.deviceDescription;
-    data['active'] = this.active;
-    data['aquarium'] = this.aquarium;
+    data["discriminator"] = this._discriminator;
+    data["deviceType"] = this.deviceType;
+    data["deviceName"] = this.deviceName;
+    data["deviceDescription"] = this.deviceDescription;
+    data["active"] = this.active;
+    data["aquarium"] = this.aquarium;
     super.toJSON(data);
     return data;
   }
@@ -1388,8 +1217,8 @@ export interface IDevice extends IEntity {
 }
 
 export enum DeviceType {
-  Pump = 'Pump',
-  Water = 'Water',
+  Pump = "Pump",
+  Water = "Water",
 }
 
 export class ModbusDevice extends Device implements IModbusDevice {
@@ -1399,15 +1228,15 @@ export class ModbusDevice extends Device implements IModbusDevice {
 
   constructor(data?: IModbusDevice) {
     super(data);
-    this._discriminator = 'ModbusDevice';
+    this._discriminator = "ModbusDevice";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.host = _data['host'];
-      this.port = _data['port'];
-      this.slaveID = _data['slaveID'];
+      this.host = _data["host"];
+      this.port = _data["port"];
+      this.slaveID = _data["slaveID"];
     }
   }
 
@@ -1420,9 +1249,9 @@ export class ModbusDevice extends Device implements IModbusDevice {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['host'] = this.host;
-    data['port'] = this.port;
-    data['slaveID'] = this.slaveID;
+    data["host"] = this.host;
+    data["port"] = this.port;
+    data["slaveID"] = this.slaveID;
     super.toJSON(data);
     return data;
   }
@@ -1440,14 +1269,14 @@ export class MQTTDevice extends Device implements IMQTTDevice {
 
   constructor(data?: IMQTTDevice) {
     super(data);
-    this._discriminator = 'MQTTDevice';
+    this._discriminator = "MQTTDevice";
   }
 
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.host = _data['host'];
-      this.port = _data['port'];
+      this.host = _data["host"];
+      this.port = _data["port"];
     }
   }
 
@@ -1460,8 +1289,8 @@ export class MQTTDevice extends Device implements IMQTTDevice {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['host'] = this.host;
-    data['port'] = this.port;
+    data["host"] = this.host;
+    data["port"] = this.port;
     super.toJSON(data);
     return data;
   }
@@ -1474,8 +1303,8 @@ export interface IMQTTDevice extends IDevice {
 
 export class ResponseModel implements IResponseModel {
   hasError!: boolean;
-  errorMessages!: { [key: string]: string };
-  warningMessages!: { [key: string]: string };
+  errorMessages!: { [key: string]: string; };
+  warningMessages!: { [key: string]: string; };
   hasWarning!: boolean;
 
   constructor(data?: IResponseModel) {
@@ -1493,22 +1322,22 @@ export class ResponseModel implements IResponseModel {
 
   init(_data?: any) {
     if (_data) {
-      this.hasError = _data['hasError'];
-      if (_data['errorMessages']) {
+      this.hasError = _data["hasError"];
+      if (_data["errorMessages"]) {
         this.errorMessages = {} as any;
-        for (let key in _data['errorMessages']) {
-          if (_data['errorMessages'].hasOwnProperty(key))
-            (<any>this.errorMessages)![key] = _data['errorMessages'][key];
+        for (let key in _data["errorMessages"]) {
+          if (_data["errorMessages"].hasOwnProperty(key))
+            (<any>this.errorMessages)![key] = _data["errorMessages"][key];
         }
       }
-      if (_data['warningMessages']) {
+      if (_data["warningMessages"]) {
         this.warningMessages = {} as any;
-        for (let key in _data['warningMessages']) {
-          if (_data['warningMessages'].hasOwnProperty(key))
-            (<any>this.warningMessages)![key] = _data['warningMessages'][key];
+        for (let key in _data["warningMessages"]) {
+          if (_data["warningMessages"].hasOwnProperty(key))
+            (<any>this.warningMessages)![key] = _data["warningMessages"][key];
         }
       }
-      this.hasWarning = _data['hasWarning'];
+      this.hasWarning = _data["hasWarning"];
     }
   }
 
@@ -1521,37 +1350,34 @@ export class ResponseModel implements IResponseModel {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['hasError'] = this.hasError;
+    data["hasError"] = this.hasError;
     if (this.errorMessages) {
-      data['errorMessages'] = {};
+      data["errorMessages"] = {};
       for (let key in this.errorMessages) {
         if (this.errorMessages.hasOwnProperty(key))
-          (<any>data['errorMessages'])[key] = this.errorMessages[key];
+          (<any>data["errorMessages"])[key] = this.errorMessages[key];
       }
     }
     if (this.warningMessages) {
-      data['warningMessages'] = {};
+      data["warningMessages"] = {};
       for (let key in this.warningMessages) {
         if (this.warningMessages.hasOwnProperty(key))
-          (<any>data['warningMessages'])[key] = this.warningMessages[key];
+          (<any>data["warningMessages"])[key] = this.warningMessages[key];
       }
     }
-    data['hasWarning'] = this.hasWarning;
+    data["hasWarning"] = this.hasWarning;
     return data;
   }
 }
 
 export interface IResponseModel {
   hasError: boolean;
-  errorMessages: { [key: string]: string };
-  warningMessages: { [key: string]: string };
+  errorMessages: { [key: string]: string; };
+  warningMessages: { [key: string]: string; };
   hasWarning: boolean;
 }
 
-export class ItemResponseModelOfModbusDevice
-  extends ResponseModel
-  implements IItemResponseModelOfModbusDevice
-{
+export class ItemResponseModelOfModbusDevice extends ResponseModel implements IItemResponseModelOfModbusDevice {
   data!: ModbusDevice;
 
   constructor(data?: IItemResponseModelOfModbusDevice) {
@@ -1564,9 +1390,7 @@ export class ItemResponseModelOfModbusDevice
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.data = _data['data']
-        ? ModbusDevice.fromJS(_data['data'])
-        : new ModbusDevice();
+      this.data = _data["data"] ? ModbusDevice.fromJS(_data["data"]) : new ModbusDevice();
     }
   }
 
@@ -1579,7 +1403,7 @@ export class ItemResponseModelOfModbusDevice
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['data'] = this.data ? this.data.toJSON() : <any>undefined;
+    data["data"] = this.data ? this.data.toJSON() : <any>undefined;
     super.toJSON(data);
     return data;
   }
@@ -1589,10 +1413,7 @@ export interface IItemResponseModelOfModbusDevice extends IResponseModel {
   data: ModbusDevice;
 }
 
-export class ItemResponseModelOfMQTTDevice
-  extends ResponseModel
-  implements IItemResponseModelOfMQTTDevice
-{
+export class ItemResponseModelOfMQTTDevice extends ResponseModel implements IItemResponseModelOfMQTTDevice {
   data!: MQTTDevice;
 
   constructor(data?: IItemResponseModelOfMQTTDevice) {
@@ -1605,9 +1426,7 @@ export class ItemResponseModelOfMQTTDevice
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.data = _data['data']
-        ? MQTTDevice.fromJS(_data['data'])
-        : new MQTTDevice();
+      this.data = _data["data"] ? MQTTDevice.fromJS(_data["data"]) : new MQTTDevice();
     }
   }
 
@@ -1620,7 +1439,7 @@ export class ItemResponseModelOfMQTTDevice
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['data'] = this.data ? this.data.toJSON() : <any>undefined;
+    data["data"] = this.data ? this.data.toJSON() : <any>undefined;
     super.toJSON(data);
     return data;
   }
@@ -1630,10 +1449,7 @@ export interface IItemResponseModelOfMQTTDevice extends IResponseModel {
   data: MQTTDevice;
 }
 
-export class ItemResponseModelOfDevice
-  extends ResponseModel
-  implements IItemResponseModelOfDevice
-{
+export class ItemResponseModelOfDevice extends ResponseModel implements IItemResponseModelOfDevice {
   data!: Device;
 
   constructor(data?: IItemResponseModelOfDevice) {
@@ -1646,7 +1462,7 @@ export class ItemResponseModelOfDevice
   init(_data?: any) {
     super.init(_data);
     if (_data) {
-      this.data = _data['data'] ? Device.fromJS(_data['data']) : new Device();
+      this.data = _data["data"] ? Device.fromJS(_data["data"]) : new Device();
     }
   }
 
@@ -1659,7 +1475,7 @@ export class ItemResponseModelOfDevice
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    data['data'] = this.data ? this.data.toJSON() : <any>undefined;
+    data["data"] = this.data ? this.data.toJSON() : <any>undefined;
     super.toJSON(data);
     return data;
   }
@@ -1673,16 +1489,10 @@ export class ApiException extends Error {
   message: string;
   status: number;
   response: string;
-  headers: { [key: string]: any };
+  headers: { [key: string]: any; };
   result: any;
 
-  constructor(
-    message: string,
-    status: number,
-    response: string,
-    headers: { [key: string]: any },
-    result: any
-  ) {
+  constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
     super();
 
     this.message = message;
@@ -1699,17 +1509,14 @@ export class ApiException extends Error {
   }
 }
 
-function throwException(
-  message: string,
-  status: number,
-  response: string,
-  headers: { [key: string]: any },
-  result?: any
-): any {
-  if (result !== null && result !== undefined) throw result;
-  else throw new ApiException(message, status, response, headers, null);
+function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
+  if (result !== null && result !== undefined)
+    throw result;
+  else
+    throw new ApiException(message, status, response, headers, null);
 }
 
 function isAxiosError(obj: any | undefined): obj is AxiosError {
   return obj && obj.isAxiosError === true;
 }
+

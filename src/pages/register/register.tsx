@@ -1,99 +1,94 @@
-import React from 'react';
+import { useDispatch } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { executeDelayed } from '../../services/utils/async-helpers';
+import { FormDescription, BuildForm } from '../../services/utils/form-builder';
 import * as Validator from '../../services/utils/validators';
 import {
-    IonButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonMenuButton,
-    IonTitle,
-    IonToolbar,
-    IonPage
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+  IonPage
 } from '@ionic/react';
-import {useDispatch} from 'react-redux';
-import {BuildForm, FormDescription} from "../../services/utils/form-builder";
-import {RouteComponentProps} from "react-router";
-import {LoginRequest, User, UserClient, UserResponse} from "../../services/rest/interface";
-import {loggedIn} from "../../services/actions/users";
-import {executeDelayed} from "../../services/utils/async-helpers";
-import {IConfig} from "../../services/rest/iconfig";
-import config from '../../services/rest/server-config';
-import {Appstorage} from "../../services/utils/appstorage";
+import { RegisterRequest, UserClient } from '../../services/rest/interface';
+import { IConfig } from '../../services/rest/iconfig';
+import config from "../../services/rest/server-config"
+import { FC } from 'react';
 
+type FormData = Readonly<RegisterRequest>;
 
-type formData = Readonly<User>;
-
-const formDescription: FormDescription<formData> = {
-    name: 'register',
-    fields: [
-        {
-            name: 'email', label: 'Email', type: 'email',
-            position: 'floating', color: 'primary', validators: [Validator.required, Validator.email]
-        },
-        {
-            name: 'password', label: 'Password', type: 'password',
-            position: 'floating', color: 'primary', validators: [Validator.required]
-        },
-        {
-            name: 'firstname', label: 'Firstname', type: 'text',
-            position: 'floating', color: 'primary', validators: [Validator.required]
-        },
-        {
-            name: 'lastname', label: 'Lastname', type: 'text',
-            position: 'floating', color: 'primary', validators: [Validator.required]
-        }
-    ],
-    submitLabel: 'Register'
+const formDescription: FormDescription<FormData> = {
+  name: 'register',
+  fields: [
+    {
+      name: 'firstname', label: 'Firstname', type: 'text',
+      position: 'floating', color: 'primary', validators: [Validator.required]
+    },
+    {
+      name: 'lastname', label: 'Lastname', type: 'text',
+      position: 'floating', color: 'primary', validators: [Validator.required]
+    },
+    {
+      name: 'email', label: 'Email', type: 'email',
+      position: 'floating', color: 'primary', validators: [Validator.required, Validator.email]
+    },
+    {
+      name: 'password', label: 'Password', type: 'password',
+      position: 'floating', color: 'primary', validators: [Validator.required]
+    },
+  ],
+  submitLabel: 'Register'
 }
 
-const {Form, loading, error} = BuildForm(formDescription);
+const { Form, loading, error } = BuildForm(formDescription);
 
-export const Register: React.FunctionComponent<RouteComponentProps<any>> = (props) => {
+export const Register: FC<RouteComponentProps<any>> = (props) => {
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const accessHeader = new IConfig();
-    const userClient = new UserClient(accessHeader, config.host);
-    const submit = (registerData: User) => {
-        dispatch(loading(true));
-        registerData.active = true;
-        userClient.register(registerData)
-            .then((registerResponse) => {
-                if (registerResponse.hasError) {
-                    // console.log('Register data:', registerData);
-                    // console.log('Registered user:', registerResponse);
-                    const errorKey = Object.keys(registerResponse.errorMessages!)[0];
-                    dispatch(error(`${errorKey}: ${registerResponse.errorMessages![errorKey]}`))
-                    return;
-                }
+  const accessHeader = new IConfig()
+  const userClient = new UserClient(accessHeader, config.host)
 
-                console.log('Register successful:', registerResponse)
+  const submit = async (registerData: RegisterRequest) => {
+    dispatch(loading(true));
 
-                executeDelayed(200, () => props.history.replace('/login'))
-                // Note: instead of redirecting, we could also login the user automatically
+    // const user = new User({
+    //   ...registerData,
+    //   active: true,
+    // })
 
-            })
-            .catch((err: Error) => {
-                dispatch(error('Error while registering: ' + err.message));
-            })
-            .finally(() => dispatch(loading(false)))
-    };
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuButton/>
-                    </IonButtons>
-                    <IonTitle>Register</IonTitle>
-                </IonToolbar>
-            </IonHeader>
+    userClient.register(registerData)
+      .then(async (registerInfo) => {
 
-            <IonContent>
-                <Form handleSubmit={submit}/>
-            </IonContent>
-        </IonPage>
-    );
+        if (registerInfo.hasError) {
+          const errors = Object.entries(registerInfo.errorMessages ?? {}).map(([k, v]) => `${k}: ${v}`).join("\\n")
+          dispatch(error(`An error occurred: ${errors}`))
+          return
+        }
+
+        executeDelayed(200, () => props.history.push('/login'))
+      })
+      .catch((err: Error) => dispatch(error('Error while registering: ' + err.message)))
+      .finally(() => dispatch(loading(false)))
+  };
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>Register</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
+        <Form handleSubmit={submit} />
+      </IonContent>
+    </IonPage>
+  );
 }
 
 export default Register
